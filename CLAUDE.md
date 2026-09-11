@@ -1,23 +1,33 @@
 # CLAUDE.md — animal-ecommerce-adventure（動物朋友的跨境電商大冒險）
 
-單檔前端「故事化學習地圖」：把工作區內 6 個既有、各自獨立的跨境電商實作工具串成一段動物朋友闖關故事，依序（流量排名 → 跨境物流 → 商品標題 → 五點式產品說明 → 成本利潤 → 整合工作流）帶學員走過完整的跨境電商知識脈絡。**本專案本身不含任何跨境電商計算/生成邏輯**，純粹是敘事＋進度追蹤＋導覽入口；每個關卡的「🚪 前往關卡練習」按鈕在新分頁開啟對應工具的真實網址，任務在那邊完成。無建置步驟、無框架、無 package.json，直接開啟 `index.html`（`file://`）或以靜態伺服器託管即可。此資料夾本身是獨立 git 儲存庫，本地身分 `Mark Tsai <tsaimark@gmail.com>`。
+單檔前端「故事化學習地圖」：把工作區內 7 個既有、各自獨立的跨境電商實作工具串成一段動物朋友闖關故事，依序（流量排名 → 跨境物流 →〈中途休息島：關鍵字文字雲，不計分〉→ 商品標題 → 五點式產品說明 → 成本利潤 → 整合工作流）帶學員走過完整的跨境電商知識脈絡。**本專案本身不含任何跨境電商計算/生成邏輯**，純粹是敘事＋進度追蹤＋導覽入口；每個關卡的「🚪 前往關卡練習」按鈕在新分頁開啟對應工具的真實網址，任務在那邊完成。無建置步驟、無框架、無 package.json，直接開啟 `index.html`（`file://`）或以靜態伺服器託管即可。此資料夾本身是獨立 git 儲存庫，本地身分 `Mark Tsai <tsaimark@gmail.com>`。
 
-2026-09-11 依使用者提供的故事腳本建置，關卡順序為使用者指定的「1→5」固定順序（流量排名比較工具 → 跨境物流大挑戰 → 商品標題產生器 → 5點式產品說明產生器 → Amazon成本分析計算機），非本專案自行決定；同日稍後使用者再要求加入第 6 關「內容工作流工作室」（`content-workflow-studio-cf`，放在最後一關）並調整故事，同時補上使用警語與創作者資訊。
+2026-09-11 依使用者提供的故事腳本建置，關卡順序為使用者指定的「1→5」固定順序（流量排名比較工具 → 跨境物流大挑戰 → 商品標題產生器 → 5點式產品說明產生器 → Amazon成本分析計算機），非本專案自行決定；同日稍後使用者再要求加入第 6 關「內容工作流工作室」（`content-workflow-studio-cf`，放在最後一關）並調整故事，同時補上使用警語與創作者資訊；再稍後又要求把「跨境電商關鍵字文字雲產生器」（`product-keyword-cloud`）插進第 2、3 關中間，定位為「休息島嶼，只有練習不計分」。
 
-## 六個關卡對應表
+## 六個必要關卡＋一座不計分休息島對應表
 
-| # | 主題 | 對應工具 | 網址 | 該工具 localStorage 序號 key | 與本頁同源？ |
-|---|------|---------|------|------------------------------|--------------|
-| 1 | 流量排行榜森林 | `行銷內容工具/traffic-rank-estimator` | <https://m255525.github.io/traffic-rank-estimator/> | `trafficRankSerial` | 是 |
-| 2 | 跨境物流大河 | `互動遊戲/amazon-logistics-game` | <https://m255525.github.io/amazon-logistics-game/> | `logisticsGameSerial` | 是 |
-| 3 | 商品標題工坊 | `行銷內容工具/product-title-generator` | <https://m255525.github.io/product-title-generator/> | `ptgSerial` | 是 |
-| 4 | 商品魔法屋 | `行銷內容工具/amazon-listing-generator` | <https://m255525.github.io/amazon-listing-generator/> | `alGenSerial` | 是 |
-| 5 | 老貓店長的帳本 | `資料儀表板/amazon-cost-calculator` | <https://m255525.github.io/amazon-cost-calculator/> | `amazonCostCalcSerial` | 是 |
-| 6 | 跨境電商指揮塔 | `行銷內容工具/content-workflow-studio-cf` | <https://content-workflow-studio-cf.content-workflow.workers.dev/> | `workflowStudioEntrySerial` | **否**（部署在 Cloudflare Workers 網域，非 `m255525.github.io`） |
+| # | 主題 | 對應工具 | 網址 | 該工具 localStorage 序號 key | 與本頁同源？ | 計入進度？ |
+|---|------|---------|------|------------------------------|--------------|-----------|
+| 1 | 流量排行榜森林 | `行銷內容工具/traffic-rank-estimator` | <https://m255525.github.io/traffic-rank-estimator/> | `trafficRankSerial` | 是 | 是 |
+| 2 | 跨境物流大河 | `互動遊戲/amazon-logistics-game` | <https://m255525.github.io/amazon-logistics-game/> | `logisticsGameSerial` | 是 | 是 |
+| 🏝️ | 中途休息島 | `行銷內容工具/product-keyword-cloud` | <https://m255525.github.io/product-keyword-cloud/> | `pkcLicenseSerial` | 是 | **否（`optional:true`）** |
+| 3 | 商品標題工坊 | `行銷內容工具/product-title-generator` | <https://m255525.github.io/product-title-generator/> | `ptgSerial` | 是 | 是 |
+| 4 | 商品魔法屋 | `行銷內容工具/amazon-listing-generator` | <https://m255525.github.io/amazon-listing-generator/> | `alGenSerial` | 是 | 是 |
+| 5 | 老貓店長的帳本 | `資料儀表板/amazon-cost-calculator` | <https://m255525.github.io/amazon-cost-calculator/> | `amazonCostCalcSerial` | 是 | 是 |
+| 6 | 跨境電商指揮塔 | `行銷內容工具/content-workflow-studio-cf` | <https://content-workflow-studio-cf.content-workflow.workers.dev/> | `workflowStudioEntrySerial` | **否**（部署在 Cloudflare Workers 網域，非 `m255525.github.io`） | 是 |
 
-這些網址與 localStorage key 名稱是**寫死在 `index.html` 的 `STAGES`／`DOWNSTREAM_KEYS` 常數裡**，若任一來源工具改名、換網址、或改了自己的 `STORAGE_KEY` 變數名稱，本頁對應項目要跟著手動更新（沒有共用設定檔或自動同步機制）。**第 6 關是唯一跟本頁不同源的關卡**——`content-workflow-studio-cf` 部署在 Cloudflare Workers（`*.content-workflow.workers.dev`），不像其餘 5 關都在 `m255525.github.io` 底下，因此第 6 關的 `workflowStudioEntrySerial` 刻意**不放進** `DOWNSTREAM_KEYS`（寫了也不會被那個網域讀到），`STAGES` 陣列裡該筆多了 `crossOrigin:true` 與 `note` 欄位，`render()` 會把 `note` 顯示成卡片內一行提醒文字，告知玩家這關序號不會自動代入。
+這些網址與 localStorage key 名稱是**寫死在 `index.html` 的 `STAGES`／`DOWNSTREAM_KEYS` 常數裡**，若任一來源工具改名、換網址、或改了自己的 `STORAGE_KEY` 變數名稱，本頁對應項目要跟著手動更新（沒有共用設定檔或自動同步機制）。**只有第 6 關跟本頁不同源**——`content-workflow-studio-cf` 部署在 Cloudflare Workers（`*.content-workflow.workers.dev`），因此第 6 關的 `workflowStudioEntrySerial` 刻意**不放進** `DOWNSTREAM_KEYS`（寫了也不會被那個網域讀到），`STAGES` 陣列裡該筆多了 `crossOrigin:true` 與 `note` 欄位；休息島的 `product-keyword-cloud` 雖然也部署在 `m255525.github.io`（同源），但因為它是額外插進去的練習站，仍需比照其他同源關卡列進 `DOWNSTREAM_KEYS`（已加入）。
 
-## 核心機制：一次登入序號、自動代入前 5 個關卡（使用者本次明確要求；第 6 關為例外，見上表）
+### 「休息島」（`optional:true`）不計分的實作細節
+
+`STAGES` 陣列裡的必要關卡都多一個 `number`（1-6，寫死對應 `kicker` 文字裡的「第N關」）欄位；休息島這筆改用 `optional:true`，沒有 `number`。`render()` 依此分流：
+
+- `var requiredStages = STAGES.filter(function(s){return !s.optional;});`——所有計分/計數/解鎖邏輯只看這個子集合，不是原始 `STAGES` 陣列的相鄰索引。**這是關鍵**：休息島插在陣列中間（logistics 和 title 之間），如果沿用「跟陣列前一筆比對」的舊寫法，商品標題工坊（title）的解鎖判斷會誤看休息島的完成狀態（而休息島永遠不會被標記完成，會讓 title 永久卡住無法解鎖）。改法是每個必要關卡改用 `requiredStages.indexOf(stage)` 找出自己在「必要關卡子序列」裡的位置，跟該子序列的前一筆比較。
+- 休息島 `isLocked` 恆為 `false`（不受任何關卡影響，也不影響任何關卡）、不渲染「我已完成」checkbox（`isOptional` 為真時 `stage-actions` 只有 CTA 按鈕）、卡片上改渲染 `.stage-optional-badge`（「🏝️ 不計分．自由練習」）取代打勾方塊、`.stage-node` 顯示 `stage.emoji`（🏝️）而非數字、卡片改虛線邊框＋米色底（`.stage.optional .stage-card`）視覺上跟六個正式關卡區隔。
+- `doneCount`／`requiredTotal`／進度條／進度文字／全破關判斷全部改用 `requiredStages`，維持「X / 6」不受休息島影響。
+- **日後如果要再插入更多「不計分」的支線關卡**，比照這個模式：`STAGES` 裡加 `optional:true`（不給 `number`），不要手動調整其他必要關卡的陣列順序判斷邏輯——`requiredStages` 這層抽象已經處理好穿插的情境。
+
+## 核心機制：一次登入序號、自動代入大部分關卡（使用者本次明確要求；第 6 關為例外，見上表）
 
 首次開啟會出現「森林動物探索社」全螢幕報到閘門（`#licenseGate`），要求輸入**探索隊序號**（可選填姓名／組別／學號／系所，用於證書、截圖與進度存檔個人化）。這是**本專案自己新建的獨立序號授權後端**（見下），不是沿用任一既有工具的序號池。
 
@@ -25,15 +35,15 @@
 
 **這個機制不能反向運作**：學員若直接先打開某個關卡工具、在那邊輸入序號，不會回頭同步到本頁面或其他關卡（只有本頁的閘門邏輯有寫入 `DOWNSTREAM_KEYS` 的程式碼，其他 5 個工具的閘門邏輯完全沒有修改，也不應該修改——它們是各自獨立、各自維運的專案，不因為本專案而增加耦合）。
 
-**給主辦單位的操作提醒**（也寫在 `manual.html`）：如果要讓「一組序號、前 5 關全部免重複輸入」真的生效，必須把同一組序號值**分別新增到 6 個地方**——本專案自己的「AnimalAdventure序號」分頁，加上 5 個關卡工具各自的授權分頁（TrafficRank序號／AmazonLogistics序號／product-title-generator 專屬分頁／AmazonListing序號／AmazonCost序號）。只加在本專案自己的分頁，只會讓「森林動物探索社報到」這一關通過，不會讓後面 5 關自動解鎖。第 6 關「內容工作流工作室」的序號則要另外加進它自己獨立的授權清單（`content-workflow-studio-cf` 自己的 `Code.gs`／Google Sheet，本專案不知情也管不到）。
+**給主辦單位的操作提醒**（也寫在 `manual.html`）：如果要讓「一組序號、大部分關卡免重複輸入」真的生效，必須把同一組序號值**分別新增到 7 個地方**——本專案自己的「AnimalAdventure序號」分頁，加上 6 個同源關卡工具各自的授權分頁（TrafficRank序號／AmazonLogistics序號／關鍵字文字雲專屬分頁／product-title-generator 專屬分頁／AmazonListing序號／AmazonCost序號）。只加在本專案自己的分頁，只會讓「森林動物探索社報到」這一關通過，不會讓後面關卡自動解鎖。第 6 關「內容工作流工作室」的序號則要另外加進它自己獨立的授權清單（`content-workflow-studio-cf` 自己的 `Code.gs`／Google Sheet，本專案不知情也管不到）。
 
 ## 序號授權後端（本專案專屬，12 個月，比照工作區既有骨架）
 
 - **綁定的 Google Sheet**：沿用 `product-title-generator`／`amazon-listing-generator`／`traffic-rank-estimator`／`amazon-cost-calculator`／`amazon-logistics-game` 共用的既有表 <https://docs.google.com/spreadsheets/d/1pqGlCvUstowBzZh7J4xEa0jy3KoK4UeHUiyMTzcSGo4/edit>，`Code.gs` 固定操作獨立分頁「AnimalAdventure序號」（`SHEET_NAME` 常數），與其餘 5 個分頁互不干擾。分頁不存在時 `getLicenseSheet_()` 會自動 `insertSheet()` 並寫入表頭（序號／開始日期／結束日期）。
 - **部署方式**：`clasp create --parentId <SheetID>`（不加 `--type`，在本專案 `.gas-deploy/` 內操作，該資料夾已加入 `.gitignore` 不進版控）→ 寫入客製化 `Code.gs`（`SHEET_NAME="AnimalAdventure序號"`，其餘邏輯逐字沿用 `traffic-rank-estimator` 已驗證過的骨架）→ `appsscript.json` 加 `webapp:{executeAs:"USER_DEPLOYING",access:"ANYONE_ANONYMOUS"}` → `clasp push --force` → `clasp deploy`。
 - 已部署：`LICENSE_CHECK_URL = https://script.google.com/macros/s/AKfycbxM07ltAJairQi5oRlbbRC_cn4KNx-FIdXY-OZnE3bRqDRlQtRF3mqjUE1fd0ILbaRs6A/exec`，Apps Script 編輯器：<https://script.google.com/d/1Lut1ZcRXwv7agZMKpzk412OJjptSnoJUGjmQFJpQQ1h_JwEj0dFKsNw5/edit>。
-- **⚠️ 尚待使用者完成一次性 OAuth 授權**：部署後 `curl -sL` 測試 `doGet` 回傳 Google 的「需要存取權」頁面（`title:"存取遭拒"`），這是正常現象（自己寫的私人腳本沒有送 Google 審查），需使用者親自打開上面的 Apps Script 編輯器網址，執行一次 `doGet` 或直接部署管理頁面跑過同意畫面，之後前端 `licenseGate` 才能正常驗證序號。此前使用者打開 `index.html` 會看到「無法連線授權伺服器」。
-- 授權完成後，需請使用者（或用 `SN-maker`）在「AnimalAdventure序號」分頁新增至少一筆序號才能真正開放使用——分頁目前只有表頭、無任何序號列，比照 `license-gate-rollout-amazon-tools-traffic-rank` 記載的同類收尾步驟。
+- **✅ 2026-09-11 已確認 OAuth 授權完成**：曾在瀏覽器 `fetch()` 對 `LICENSE_CHECK_URL` 送出測試序號，回傳正常的 `{"valid":false,"reason":"serial_not_found"}` JSON（而非早期的「需要存取權」錯誤頁），確認一次性 OAuth 同意流程已由使用者完成，`licenseGate` 可以正常運作。
+- 目前「AnimalAdventure序號」分頁應該仍只有表頭、無任何序號列（除非使用者已自行新增）——需請使用者（或用 `SN-maker`）新增至少一筆序號才能真正開放使用，比照 `license-gate-rollout-amazon-tools-traffic-rank` 記載的同類收尾步驟。
 
 ## 身分欄位（姓名／組別／學號／系所，2026-09-11 應使用者要求新增）
 
@@ -97,7 +107,7 @@
 
 ## 使用警語與創作者資訊（2026-09-11 應使用者要求新增）
 
-`index.html` 的 `<footer>` 新增 `.warn-box`（六條使用警語，涵蓋「本頁不提供電商功能」「完成勾選為自我回報」「各關卡內容以該工具自身條款為準」「第六關序號不會自動代入」「資料只存本機不回傳」「僅供教學個人使用」）與 `.creator-box`（創作者資訊：Mark Tsai（蔡豐全）），版面與配色（`rgba(var(--bad-rgb),...)`／`rgba(var(--accent-rgb),...)`）比照 `traffic-rank-estimator` 的 `.warn-box`/`.creator-box`/`.footer-meta` 樣式但套用本專案的 CSS token 命名。`footer-links` 內新增 `製作：Mark Tsai｜tsaimark@gmail.com` 一行（`mailto:` 連結）。`manual.html` 同步更新頂部警語文字（5→6）與底部創作者資訊（補上全名與 email）。
+`index.html` 的 `<footer>` 新增 `.warn-box`（使用警語，涵蓋「本頁不提供電商功能」「完成勾選為自我回報」「各關卡內容以該工具自身條款為準」「中途休息島不計分不列入進度」「第六關序號不會自動代入」「資料只存本機不回傳」「僅供教學個人使用」）與 `.creator-box`（創作者資訊：Mark Tsai（蔡豐全）），版面與配色（`rgba(var(--bad-rgb),...)`／`rgba(var(--accent-rgb),...)`）比照 `traffic-rank-estimator` 的 `.warn-box`/`.creator-box`/`.footer-meta` 樣式但套用本專案的 CSS token 命名。`footer-links` 內新增 `製作：Mark Tsai｜tsaimark@gmail.com` 一行（`mailto:` 連結）。`manual.html` 同步更新頂部警語文字與底部創作者資訊（補上全名與 email），工具總數隨休息島加入從 6→7 一併更新。
 
 ## 功能配套範圍
 
