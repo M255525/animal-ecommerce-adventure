@@ -134,4 +134,6 @@
 
 ## 部署
 
-本機開發完成，尚未推公開 GitHub Pages（比照 `pref-confirm-before-deploy-new-experimental-tool` 記憶，新專案上線前先與使用者確認）。上線流程比照工作區慣例：`gh repo create` → push → `.github/workflows/deploy-pages.yml`（Actions 部署模式）→ `gh api repos/M255525/animal-ecommerce-adventure/pages -X POST -f build_type=workflow` 啟用 Pages。
+2026-09-11 應使用者要求推上公開 GitHub Pages。流程比照工作區慣例：`gh repo create M255525/animal-ecommerce-adventure --public --source=. --remote=origin` → `git push -u origin master` → `.github/workflows/deploy-pages.yml`（Actions 部署模式，`branches:["master"]` 對應本 repo 的預設分支，非 `main`）→ `gh api repos/M255525/animal-ecommerce-adventure/pages -X POST -f build_type=workflow` 啟用 Pages。已用 `gh run watch` 確認首次部署成功，並用 Playwright 對正式網址 <https://m255525.github.io/animal-ecommerce-adventure/> 驗證：首頁渲染正常、報到閘門用測試序號 `mark0131` 端對端驗證通過、`manual.html` 可正常存取。
+
+公開 repo：<https://github.com/M255525/animal-ecommerce-adventure>。
