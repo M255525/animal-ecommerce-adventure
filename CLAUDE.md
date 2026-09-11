@@ -58,9 +58,33 @@
 - 這組存檔/讀檔**只搬動 `progress` 與 `identity`，刻意不包含序號**（`animalAdventureSerial`）——換裝置/瀏覽器時序號驗證仍須照第一次報到流程重新輸入，存檔只負責接續故事進度與身分資訊，避免序號檔案外流被冒用的疑慮。
 - 已用 Playwright 以 `DataTransfer` 建構真實 `File` 物件指派給 `input.files` 並手動 `dispatchEvent('change')` 完整驗證這條路徑（無法用真實檔案選取對話框自動化測試，這是目前最接近真實使用者操作的驗證方式）。
 
+## 動物夥伴選角（2026-09-11 應使用者要求新增）
+
+報到閘門新增「選擇你的動物夥伴」步驟：`CHARACTERS` 常數（5 筆，`{id,emoji,name,role,color}`，對應故事裡的兔子/狐狸/小熊/海獺/貓頭鷹）定義在主程式 IIFE、透過 `window.__animalAdventure.CHARACTERS` 讓報到閘門 IIFE 讀取（避免兩個 IIFE 各自維護一份重複資料）。`#charGrid` 由 `buildCharGrid()` 動態產生 5 張可點選卡片，選中的角色**以 DOM 上 `.char-card.selected` 為唯一事實來源**（`getSelectedCharacterId()` 現場查詢，不另外存一份 JS 閉包變數）——這是刻意的設計，因為「匯入進度存檔」會直接改寫 DOM class 來還原選角狀態，如果另外維護一個閉包變數，兩邊值容易不同步（畫面看起來已選、實際送出卻是空的）。
+
+**選角是報到的必要步驟，不是純裝飾**：`btnGateConfirm` 點擊時若 `getSelectedCharacterId()` 為空，會顯示 `#charHint` 提示文字並捲動到選角區塊、直接 `return`，不會繼續送出序號驗證——這是使用者本次明確要求「進來要選擇一個角色」的行為，不是選填。選中的角色 id 與「幫動物夥伴取的名字」（沿用既有的 `姓名` 欄位，不另開一個重複的命名欄位）一起存進 `animalAdventureIdentity`（新增 `character` 欄位）。
+
+角色資訊會出現在三個地方：
+- **`#playerChip`**（topbar，`renderPlayerChip()`）：顯示「🦊 小明」樣式的小徽章，背景色用 `--char-color` 走 `color-mix()`（有 `var(--surface-2)` 純色 fallback，見下）。
+- **`#teamRoster`**（hero 區塊下方，`renderTeamRoster()`）：5 個動物頭像橫排展示團隊成員，選中的角色疊加 `.active` 樣式（邊框變成該角色代表色）。
+- **證書與寶箱識別資訊列**：`downloadCertificate()` 在姓名前加上角色 emoji、`identityLine()`／`#treasureIdentity` 在最前面加一行「動物夥伴：🦊 狐狸（市場分析師）」。
+
+`saveIdentity()`（報到閘門 IIFE）存完之後會呼叫 `window.__animalAdventure.render()`（不是只呼叫 `renderPlayerChip()`）——因為 `render()` 內部才會一併重繪 `teamRoster` 的 `.active` 狀態，只呼叫 `renderPlayerChip()` 會讓 topbar 徽章更新但團隊橫幅的高亮沒跟著變，兩者曾經不同步過一次，修好後統一走 `render()`。
+
+**`color-mix()` 相容性**：`.char-card.selected`／`.player-chip` 的背景色用到 `color-mix(in srgb, var(--char-color) N%, var(--surface-2))`（較新的 CSS 函式，Safari 16.2+/Chrome 111+/Firefox 113+ 才支援）。寫法是**同一個屬性寫兩次**——先寫一個純色 fallback（`background:var(--surface-2)` 等），再寫一次 `color-mix()` 版本；不支援的瀏覽器會整條 `color-mix()` 宣告視為不可解析而被忽略，保留前一條 fallback 的值，支援的瀏覽器則以後者覆蓋，不需要 `@supports` 判斷。
+
+## 視覺強化（2026-09-11 應使用者要求「畫面太素淨，強化動物朋友的感覺，但不要過於凌亂」）
+
+- **背景爪印紋理**：`body` 的 `background` 疊加一層極低透明度（`fill-opacity:0.05`）的 inline SVG 爪印圖案（`data:image/svg+xml,...`），`background-size:140px 140px` 平鋪，刻意壓得很淡、只當作紙感紋理，不與內容搶視覺。
+- **對話泡泡式引言**：`.stage-quote` 從純文字引言改成「圓形動物頭像 + 泡泡」佈局（`.quote-avatar` 用該關 `stage.animal` 的 emoji），左上角直角模擬對話框尖角（`border-top-left-radius:4px`），呼應「動物朋友在說話」的故事感。
+- **團隊成員橫幅**：見上方「動物夥伴選角」一節的 `#teamRoster`。
+- 三者都刻意維持低飽和度、小尺寸、不佔用太多版面，避免使用者原本擔心的「凌亂」——沒有新增跑馬燈以外的動態效果、沒有額外彈窗或強制引導。
+
 ## 視覺主題
 
 淺色「森林小徑」主題（`--bg:#f5ecd7` 暖米色羊皮紙底＋`--accent:#4d8b31` 森林綠＋`--accent-2:#d97706` 琥珀橘），刻意選淺色底與工作區多數深色系姊妹工具區隔，貼近故事書/兒童冒險地圖的氣氛。關卡地圖用 `.trail::before` 中央虛線＋左右交錯卡片（`.stage.left`/`.stage.right`）呈現一條蜿蜒小徑，斷點 680px 以下收成單欄、虛線移到左側（`.trail::before{left:26px}`）。
+
+**踩坑記錄——`.gate-id-grid` 曾經橫向溢出且未套樣式**：組別/學號/系所這三個欄位的 `<input>` 因為不在 `.gate-row` 裡也沒有 `#gateName` 這個 id，一開始完全沒吃到任何自訂樣式（背景/邊框/圓角），維持瀏覽器原生外觀，且原生 `<input>` 的預設最小寬度（約 170px）撐爆了 grid 的 1fr 欄位，導致 `.gate-box` 出現水平捲軸。修法：`.gate-row input,#gateName,.gate-id-grid input` 三個選擇器合併成同一條規則統一套樣式，並加 `min-width:0` 讓 grid track 可以縮到比 input 預設最小寬度更窄。**日後在既有 `.gate-row`／`#gateName` 樣式規則之外新增任何欄位輸入框時，記得把新的 selector 一併加進這條規則，不要只顧著加版面（grid/flex）卻忘記樣式跟最小寬度。**
 
 ## 第六關與故事調整（2026-09-11 應使用者要求新增）
 
