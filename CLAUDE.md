@@ -1,30 +1,31 @@
 # CLAUDE.md — animal-ecommerce-adventure（動物朋友的跨境電商大冒險）
 
-單檔前端「故事化學習地圖」：把工作區內 5 個既有、各自獨立的跨境電商實作工具串成一段動物朋友闖關故事，依序（流量排名 → 跨境物流 → 商品標題 → 五點式產品說明 → 成本利潤）帶學員走過完整的跨境電商知識脈絡。**本專案本身不含任何跨境電商計算/生成邏輯**，純粹是敘事＋進度追蹤＋導覽入口；每個關卡的「🚪 前往關卡練習」按鈕在新分頁開啟對應工具的真實 GitHub Pages 網址，任務在那邊完成。無建置步驟、無框架、無 package.json，直接開啟 `index.html`（`file://`）或以靜態伺服器託管即可。此資料夾本身是獨立 git 儲存庫，本地身分 `Mark Tsai <tsaimark@gmail.com>`。
+單檔前端「故事化學習地圖」：把工作區內 6 個既有、各自獨立的跨境電商實作工具串成一段動物朋友闖關故事，依序（流量排名 → 跨境物流 → 商品標題 → 五點式產品說明 → 成本利潤 → 整合工作流）帶學員走過完整的跨境電商知識脈絡。**本專案本身不含任何跨境電商計算/生成邏輯**，純粹是敘事＋進度追蹤＋導覽入口；每個關卡的「🚪 前往關卡練習」按鈕在新分頁開啟對應工具的真實網址，任務在那邊完成。無建置步驟、無框架、無 package.json，直接開啟 `index.html`（`file://`）或以靜態伺服器託管即可。此資料夾本身是獨立 git 儲存庫，本地身分 `Mark Tsai <tsaimark@gmail.com>`。
 
-2026-09-11 依使用者提供的故事腳本建置，關卡順序為使用者指定的「1→5」固定順序（流量排名比較工具 → 跨境物流大挑戰 → 商品標題產生器 → 5點式產品說明產生器 → Amazon成本分析計算機），非本專案自行決定。
+2026-09-11 依使用者提供的故事腳本建置，關卡順序為使用者指定的「1→5」固定順序（流量排名比較工具 → 跨境物流大挑戰 → 商品標題產生器 → 5點式產品說明產生器 → Amazon成本分析計算機），非本專案自行決定；同日稍後使用者再要求加入第 6 關「內容工作流工作室」（`content-workflow-studio-cf`，放在最後一關）並調整故事，同時補上使用警語與創作者資訊。
 
-## 五個關卡對應表
+## 六個關卡對應表
 
-| # | 主題 | 對應工具 | GitHub Pages 網址 | 該工具 localStorage 序號 key |
-|---|------|---------|-------------------|------------------------------|
-| 1 | 流量排行榜森林 | `行銷內容工具/traffic-rank-estimator` | <https://m255525.github.io/traffic-rank-estimator/> | `trafficRankSerial` |
-| 2 | 跨境物流大河 | `互動遊戲/amazon-logistics-game` | <https://m255525.github.io/amazon-logistics-game/> | `logisticsGameSerial` |
-| 3 | 商品標題工坊 | `行銷內容工具/product-title-generator` | <https://m255525.github.io/product-title-generator/> | `ptgSerial` |
-| 4 | 商品魔法屋 | `行銷內容工具/amazon-listing-generator` | <https://m255525.github.io/amazon-listing-generator/> | `alGenSerial` |
-| 5 | 老貓店長的帳本 | `資料儀表板/amazon-cost-calculator` | <https://m255525.github.io/amazon-cost-calculator/> | `amazonCostCalcSerial` |
+| # | 主題 | 對應工具 | 網址 | 該工具 localStorage 序號 key | 與本頁同源？ |
+|---|------|---------|------|------------------------------|--------------|
+| 1 | 流量排行榜森林 | `行銷內容工具/traffic-rank-estimator` | <https://m255525.github.io/traffic-rank-estimator/> | `trafficRankSerial` | 是 |
+| 2 | 跨境物流大河 | `互動遊戲/amazon-logistics-game` | <https://m255525.github.io/amazon-logistics-game/> | `logisticsGameSerial` | 是 |
+| 3 | 商品標題工坊 | `行銷內容工具/product-title-generator` | <https://m255525.github.io/product-title-generator/> | `ptgSerial` | 是 |
+| 4 | 商品魔法屋 | `行銷內容工具/amazon-listing-generator` | <https://m255525.github.io/amazon-listing-generator/> | `alGenSerial` | 是 |
+| 5 | 老貓店長的帳本 | `資料儀表板/amazon-cost-calculator` | <https://m255525.github.io/amazon-cost-calculator/> | `amazonCostCalcSerial` | 是 |
+| 6 | 跨境電商指揮塔 | `行銷內容工具/content-workflow-studio-cf` | <https://content-workflow-studio-cf.content-workflow.workers.dev/> | `workflowStudioEntrySerial` | **否**（部署在 Cloudflare Workers 網域，非 `m255525.github.io`） |
 
-這 5 個網址與 localStorage key 名稱是**寫死在 `index.html` 的 `STAGES`／`DOWNSTREAM_KEYS` 常數裡**，若任一來源工具改名、換網址、或改了自己的 `STORAGE_KEY` 變數名稱，本頁對應項目要跟著手動更新（沒有共用設定檔或自動同步機制）。
+這些網址與 localStorage key 名稱是**寫死在 `index.html` 的 `STAGES`／`DOWNSTREAM_KEYS` 常數裡**，若任一來源工具改名、換網址、或改了自己的 `STORAGE_KEY` 變數名稱，本頁對應項目要跟著手動更新（沒有共用設定檔或自動同步機制）。**第 6 關是唯一跟本頁不同源的關卡**——`content-workflow-studio-cf` 部署在 Cloudflare Workers（`*.content-workflow.workers.dev`），不像其餘 5 關都在 `m255525.github.io` 底下，因此第 6 關的 `workflowStudioEntrySerial` 刻意**不放進** `DOWNSTREAM_KEYS`（寫了也不會被那個網域讀到），`STAGES` 陣列裡該筆多了 `crossOrigin:true` 與 `note` 欄位，`render()` 會把 `note` 顯示成卡片內一行提醒文字，告知玩家這關序號不會自動代入。
 
-## 核心機制：一次登入序號、自動代入 5 個關卡（使用者本次明確要求）
+## 核心機制：一次登入序號、自動代入前 5 個關卡（使用者本次明確要求；第 6 關為例外，見上表）
 
-首次開啟會出現「森林動物探索社」全螢幕報到閘門（`#licenseGate`），要求輸入**探索隊序號**（選填探險家名字，用於最後證書個人化）。這是**本專案自己新建的第 6 個獨立序號授權後端**（見下），不是沿用任一既有工具的序號池。
+首次開啟會出現「森林動物探索社」全螢幕報到閘門（`#licenseGate`），要求輸入**探索隊序號**（可選填姓名／組別／學號／系所，用於證書、截圖與進度存檔個人化）。這是**本專案自己新建的獨立序號授權後端**（見下），不是沿用任一既有工具的序號池。
 
-**同來源 localStorage 共享是這個機制成立的關鍵**：因為 5 個關卡工具與本頁面全部部署在同一個 GitHub Pages 使用者網域 `m255525.github.io` 底下（只是 path 不同：`/animal-ecommerce-adventure/`、`/traffic-rank-estimator/`……），瀏覽器的 `localStorage` 是以 origin（scheme+host+port）為界線，**與 path 無關**——因此本頁閘門驗證通過後，`saveSerial()` 會同時把同一組序號寫進 `DOWNSTREAM_KEYS` 陣列列出的 5 個 key，使用者點開任一關卡工具時，該工具自己的序號閘門邏輯（`input.value = loadSerial(); if (input.value) runCheck(input.value, {silent:true})`，5 個工具皆用此寫法）會讀到這組預先寫入的值並自動靜默重驗——**如果**主辦單位也把同一組序號值加進該工具自己綁定的 Google Sheet 分頁，就會直接驗證通過、不需使用者再輸入一次；如果沒有，該工具仍會顯示「查無此序號」，但欄位已預先帶入這組序號，使用者通常只需要修正而非整個重打。
+**同來源 localStorage 共享是這個機制成立的關鍵，但只適用於前 5 關**：前 5 個關卡工具與本頁面全部部署在同一個 GitHub Pages 使用者網域 `m255525.github.io` 底下（只是 path 不同：`/animal-ecommerce-adventure/`、`/traffic-rank-estimator/`……），瀏覽器的 `localStorage` 是以 origin（scheme+host+port）為界線，**與 path 無關**——因此本頁閘門驗證通過後，`saveSerial()` 會同時把同一組序號寫進 `DOWNSTREAM_KEYS` 陣列列出的 5 個 key，使用者點開任一關卡工具時，該工具自己的序號閘門邏輯（`input.value = loadSerial(); if (input.value) runCheck(input.value, {silent:true})`，5 個工具皆用此寫法）會讀到這組預先寫入的值並自動靜默重驗——**如果**主辦單位也把同一組序號值加進該工具自己綁定的 Google Sheet 分頁，就會直接驗證通過、不需使用者再輸入一次；如果沒有，該工具仍會顯示「查無此序號」，但欄位已預先帶入這組序號，使用者通常只需要修正而非整個重打。**第 6 關「內容工作流工作室」部署在 Cloudflare Workers 的不同網域，這套機制對它完全不生效**，序號永遠需要另外手動輸入（見上表與 `note` 欄位）。
 
 **這個機制不能反向運作**：學員若直接先打開某個關卡工具、在那邊輸入序號，不會回頭同步到本頁面或其他關卡（只有本頁的閘門邏輯有寫入 `DOWNSTREAM_KEYS` 的程式碼，其他 5 個工具的閘門邏輯完全沒有修改，也不應該修改——它們是各自獨立、各自維運的專案，不因為本專案而增加耦合）。
 
-**給主辦單位的操作提醒**（也寫在 `manual.html`）：如果要讓「一組序號、5 關全部免重複輸入」真的生效，必須把同一組序號值**分別新增到 6 個地方**——本專案自己的「AnimalAdventure序號」分頁，加上 5 個關卡工具各自的授權分頁（TrafficRank序號／AmazonLogistics序號／product-title-generator 專屬分頁／AmazonListing序號／AmazonCost序號）。只加在本專案自己的分頁，只會讓「森林動物探索社報到」這一關通過，不會讓後面 5 關自動解鎖。
+**給主辦單位的操作提醒**（也寫在 `manual.html`）：如果要讓「一組序號、前 5 關全部免重複輸入」真的生效，必須把同一組序號值**分別新增到 6 個地方**——本專案自己的「AnimalAdventure序號」分頁，加上 5 個關卡工具各自的授權分頁（TrafficRank序號／AmazonLogistics序號／product-title-generator 專屬分頁／AmazonListing序號／AmazonCost序號）。只加在本專案自己的分頁，只會讓「森林動物探索社報到」這一關通過，不會讓後面 5 關自動解鎖。第 6 關「內容工作流工作室」的序號則要另外加進它自己獨立的授權清單（`content-workflow-studio-cf` 自己的 `Code.gs`／Google Sheet，本專案不知情也管不到）。
 
 ## 序號授權後端（本專案專屬，12 個月，比照工作區既有骨架）
 
@@ -61,14 +62,28 @@
 
 淺色「森林小徑」主題（`--bg:#f5ecd7` 暖米色羊皮紙底＋`--accent:#4d8b31` 森林綠＋`--accent-2:#d97706` 琥珀橘），刻意選淺色底與工作區多數深色系姊妹工具區隔，貼近故事書/兒童冒險地圖的氣氛。關卡地圖用 `.trail::before` 中央虛線＋左右交錯卡片（`.stage.left`/`.stage.right`）呈現一條蜿蜒小徑，斷點 680px 以下收成單欄、虛線移到左側（`.trail::before{left:26px}`）。
 
+## 第六關與故事調整（2026-09-11 應使用者要求新增）
+
+原始腳本只有 5 個任務、以「Amazon 成本分析計算機」收尾。使用者要求追加第 6 關「內容工作流工作室」（`content-workflow-studio-cf`，一直沒有分配到台詞的**海獺**在這關首次開口），網址放在最後一關，並調整故事讓「成本利潤」不再是終點，改為「把所有技能串成一條工作流程」才是真正的終局：
+
+- 第 5 關（`cost`）的 `story`／`task` 移除了原本「最後」「最終任務」等暗示故事結束的字眼，改為承先啟後的過渡。
+- 第 6 關（`workflow`）的 `kicker` 為「第六關 · 跨境電商指揮塔」，`story` 由海獺提出「把整條流程串成一部自動運轉的機器」的觀點，呼應 `content-workflow-studio-cf` 本身「串接多個工具成一條工作流」的產品定位（見其 `CLAUDE.md`）；`task` 標示為「🎯 最終任務」。
+- 全域文案（hero 信件、寶箱結語 blockquote、證書內文、確認彈窗、進度計數）已全數從「5」改為「6」，`downloadCertificate()` 的關卡摘要行改用精簡的六段式「流量排行榜 → 跨境物流 → 商品標題 → 產品說明 → 成本利潤 → 整合工作流」避免證書 1000px 寬度換行溢出。
+- 第 6 關卡片獨有 `note` 欄位（`STAGES[5].note`），`render()` 會多渲染一個 `.stage-note` 提示區塊，說明序號不會自動代入（見上方跨網域說明）。
+
+## 使用警語與創作者資訊（2026-09-11 應使用者要求新增）
+
+`index.html` 的 `<footer>` 新增 `.warn-box`（六條使用警語，涵蓋「本頁不提供電商功能」「完成勾選為自我回報」「各關卡內容以該工具自身條款為準」「第六關序號不會自動代入」「資料只存本機不回傳」「僅供教學個人使用」）與 `.creator-box`（創作者資訊：Mark Tsai（蔡豐全）），版面與配色（`rgba(var(--bad-rgb),...)`／`rgba(var(--accent-rgb),...)`）比照 `traffic-rank-estimator` 的 `.warn-box`/`.creator-box`/`.footer-meta` 樣式但套用本專案的 CSS token 命名。`footer-links` 內新增 `製作：Mark Tsai｜tsaimark@gmail.com` 一行（`mailto:` 連結）。`manual.html` 同步更新頂部警語文字（5→6）與底部創作者資訊（補上全名與 email）。
+
 ## 功能配套範圍
 
 - ✅ 頂部跑馬燈（沿用工作區共用 Google Apps Script 端點，逐字複製 `traffic-rank-estimator` 版本，`localStorage` key `animalAdventureMarquee`）
 - ✅ PWA 加入主畫面（`manifest.json`+`service-worker.js`+`icons/`，逐字複製九專案共用已驗證版本；icons 用 PIL 手繪深色森林綠圓角方塊＋米色爪印剪影，非外部素材，見 `manifest.json` 內 icon 清單）
 - ✅ 訪客計數器（`visitor-badge.laobi.icu`，`page_id=m255525.animalecommerceadventure`）
 - ✅ `manual.html`（說明整體機制＋序號代入原理＋常見問題，給主辦單位與學員兩種讀者）
+- ✅ 使用警語＋創作者資訊（`index.html` footer 的 `.warn-box`/`.creator-box`，見上）
 - ❌ 不做桌面版 exe（教學導覽入口定位，比照 `bowling-game`／`amazon-logistics-game` 從簡）
-- ❌ 不做跨分頁真實完成偵測（BroadcastChannel/postMessage 需要同時修改另外 5 個獨立專案才能雙向溝通，非本專案能單方面達成，因此完成勾選是使用者自我回報）
+- ❌ 不做跨分頁真實完成偵測（BroadcastChannel/postMessage 需要同時修改另外 5 個同源獨立專案才能雙向溝通，第 6 關更是跨網域完全無法溝通，因此完成勾選是使用者自我回報）
 
 ## Port
 
@@ -80,7 +95,7 @@
 
 驗證序號代入邏輯不需要真正的後端：在瀏覽器 console 執行 `localStorage.setItem('animalAdventureSerial','test123')` 後重新整理，確認 `#gateSerial` 欄位帶入該值且觸發一次 silent 重驗；驗證通過（或用 fetch mock 偽造 `{valid:true,expiresAt:...}`）後檢查 `localStorage.getItem('trafficRankSerial')` 等 5 個 key 是否也已寫入相同值。
 
-驗證闖關進度：`localStorage.setItem('animalAdventureProgress', JSON.stringify({traffic:true,logistics:true,title:true,listing:true,cost:true}))` 後呼叫 `window.__animalAdventure.render()`，確認 `#treasureSection` 移除 `hidden`、`#treasureIdentity` 正確組合身分欄位、`confetti()` 觸發、`#btnCertificate`／`#btnScreenshot` 皆可正常產出並觸發下載。
+驗證闖關進度：`localStorage.setItem('animalAdventureProgress', JSON.stringify({traffic:true,logistics:true,title:true,listing:true,cost:true,workflow:true}))` 後呼叫 `window.__animalAdventure.render()`，確認 `#treasureSection` 移除 `hidden`、`#treasureIdentity` 正確組合身分欄位、`confetti()` 觸發、`#btnCertificate`／`#btnScreenshot` 皆可正常產出並觸發下載。另外確認 `STAGES[5].note`（第六關跨網域提示）有正確渲染成 `.stage-note`。
 
 驗證進度存檔／讀檔：用 `new File([JSON.stringify(payload)], 'x.json')` + `DataTransfer` 建構真實 File 物件指派給 `#loadProgressInput.files`，手動 `dispatchEvent(new Event('change',{bubbles:true}))`（真實檔案選取對話框無法自動化），確認 `alert('進度已匯入！')` 觸發、`animalAdventureProgress`／`animalAdventureIdentity` 與四個報到欄位皆正確還原。
 

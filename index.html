@@ -1,7 +1,7 @@
 <title>動物朋友的跨境電商大冒險</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="動物朋友跨境電商闖關學習冒險：依序完成5個真實工具關卡，學會市場、流量、商品、物流與利潤的完整跨境電商知識">
+<meta name="description" content="動物朋友跨境電商闖關學習冒險：依序完成6個真實工具關卡，學會市場、流量、商品、物流、利潤到整合工作流的完整跨境電商知識">
 <meta name="theme-color" content="#4d8b31">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -108,6 +108,7 @@ main{max-width:820px;margin:0 auto;padding:28px 20px 60px}
 .stage-story{font-size:13.5px;color:var(--text-dim);margin-bottom:10px}
 .stage-quote{font-size:13.5px;font-style:italic;background:var(--surface-2);border-left:3px solid var(--accent-2);padding:8px 12px;border-radius:0 8px 8px 0;margin-bottom:10px}
 .stage-task{font-size:13.5px;font-weight:700;margin-bottom:14px}
+.stage-note{font-size:12px;color:var(--accent-2);background:rgba(var(--accent-2-rgb),.1);border-radius:8px;padding:6px 10px;margin:-8px 0 14px}
 .stage-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .stage-cta{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border-radius:10px;background:var(--accent);color:#fff;text-decoration:none;font-weight:800;font-size:13.5px}
 .stage-cta:hover{filter:brightness(1.08)}
@@ -143,7 +144,16 @@ main{max-width:820px;margin:0 auto;padding:28px 20px 60px}
 .identity-line{font-size:13px;color:var(--text-dim);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:6px 0 4px;text-align:left}
 
 footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;font-size:12.5px;color:var(--text-dim)}
-.footer-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.warn-box{text-align:left;background:rgba(var(--bad-rgb),.08);border:1px solid rgba(var(--bad-rgb),.3);border-radius:10px;padding:16px 18px;font-size:13px;color:var(--text-dim);margin-bottom:16px}
+.warn-box strong{color:var(--bad)}
+.warn-box ul{margin:8px 0 0;padding-left:20px}
+.warn-box li{margin:4px 0}
+.creator-box{text-align:left;background:rgba(var(--accent-rgb),.08);border:1px solid rgba(var(--accent-rgb),.25);border-radius:10px;padding:14px 18px;font-size:13px;color:var(--text-dim);margin-bottom:16px}
+.creator-box h3{color:var(--accent);margin:0 0 6px;font-size:14.5px}
+.creator-box p{margin:2px 0}
+.footer-meta-text{font-size:12.5px;color:var(--text-dim)}
+.footer-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.footer-links a{color:var(--text-dim)}
 .footer-link-btn{background:none;border:1px solid var(--line);border-radius:99px;padding:6px 14px;font-size:12.5px;color:var(--text-dim);cursor:pointer}
 
 /* confetti */
@@ -159,7 +169,7 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
   <div class="gate-box">
     <div class="gate-emoji">🐾</div>
     <div class="gate-logo">森林動物探索社 · 跨境電商探索隊</div>
-    <div class="gate-desc">輸入你的專屬「探索隊序號」加入冒險！同一組序號驗證通過後，會自動代入後面 5 個關卡的工具——只要各關卡也認得這組序號，就不用再重複輸入。序號自第一次驗證起提供 12 個月使用期限。</div>
+    <div class="gate-desc">輸入你的專屬「探索隊序號」加入冒險！同一組序號驗證通過後，會自動代入前 5 個關卡的工具——只要各關卡也認得這組序號，就不用再重複輸入（第六關工具網域不同，需另外取得專屬序號）。序號自第一次驗證起提供 12 個月使用期限。</div>
     <div class="gate-field">
       <label for="gateName">姓名（選填，會印在證書與截圖上）</label>
       <input type="text" id="gateName" placeholder="例如：小明" autocomplete="off">
@@ -195,7 +205,7 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
   <div class="brand">🐾 <span>動物朋友的跨境電商大冒險</span></div>
   <div class="topbar-right">
     <span id="licenseBadge" class="license-badge" style="display:none;"></span>
-    <span class="progress-pill" id="progressPill">0 / 5 關卡完成</span>
+    <span class="progress-pill" id="progressPill">0 / 6 關卡完成</span>
     <nav><a href="manual.html">操作手冊</a></nav>
   </div>
 </div>
@@ -205,14 +215,14 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
   <h1>跟著動物朋友，<span class="accent">闖出一趟跨境電商大冒險</span></h1>
   <p class="lead">森林裡住著一群夢想把台灣商品賣到全世界的動物朋友。一天，他們收到一封來自「全球電商森林」的挑戰書……</p>
   <div class="letter">
-    <p>📜 <b>「想成為真正的跨境電商高手，就必須完成五個任務！」</b></p>
-    <p style="margin-bottom:0;">於是，兔子、狐狸、小熊、海獺和貓頭鷹組成「跨境電商探險隊」，踏上冒險旅程——依序點開下面 5 個關卡，每完成一關真實工具的練習，就回來勾選「我已完成」，解鎖下一關！</p>
+    <p>📜 <b>「想成為真正的跨境電商高手，就必須完成六個任務！」</b></p>
+    <p style="margin-bottom:0;">於是，兔子、狐狸、小熊、海獺和貓頭鷹組成「跨境電商探險隊」，踏上冒險旅程——依序點開下面 6 個關卡，每完成一關真實工具的練習，就回來勾選「我已完成」，解鎖下一關！</p>
   </div>
 </div>
 
 <div class="progress-track">
   <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBarInner"></div></div>
-  <div class="progress-label" id="progressLabel">0／5 關卡完成</div>
+  <div class="progress-label" id="progressLabel">0／6 關卡完成</div>
   <div class="progress-actions">
     <button type="button" class="footer-link-btn" id="btnSaveProgress">💾 下載進度存檔</button>
     <button type="button" class="footer-link-btn" id="btnLoadProgress">📂 匯入進度存檔</button>
@@ -227,7 +237,7 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
   <div class="treasure hidden" id="treasureSection">
     <div class="chest">🏆🐾</div>
     <h2>全球電商寶箱打開了！</h2>
-    <blockquote>「跨境電商不是把商品賣出去，而是找到『市場、流量、商品、物流與利潤』之間的最佳平衡。」</blockquote>
+    <blockquote>「跨境電商不是把商品賣出去，而是找到『市場、流量、商品、物流與利潤』之間的最佳平衡，並且懂得把這些環節串成一條系統化的工作流程。」</blockquote>
     <p>🎉 恭喜你，<strong id="graduateName">探險家</strong>！你已經完成「動物朋友跨境電商訓練營」，正式成為 <strong>🌏🐾 跨境電商探險家！</strong></p>
     <div class="identity-line" id="treasureIdentity"></div>
     <div class="cta-row">
@@ -240,8 +250,25 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
 </main>
 
 <footer>
-  <p>本頁僅為 5 個獨立跨境電商工具的故事化導覽入口，各關卡任務請於連結開啟的工具內實際操作完成；「已完成」勾選為自我紀錄，不會回傳任何資料。</p>
+  <div class="warn-box">
+    <strong>⚠ 使用警語</strong>
+    <ul>
+      <li>本頁僅為 6 個獨立跨境電商工具的故事化導覽入口與整理工具，本身不提供任何電商計算或內容生成服務。</li>
+      <li>各關卡「我已完成這一關的任務」為使用者自我回報，不代表任務內容已受任何審核或驗證。</li>
+      <li>各關卡連結之工具的功能、內容、生成結果與其正確性，請以該工具自身的操作手冊與使用警語為準，本頁不另作保證。</li>
+      <li>第六關「內容工作流工作室」部署於不同網域，需另外向主辦單位取得該關專屬序號，探索隊序號不會自動代入。</li>
+      <li>進度、身分資訊與序號僅存於使用者本機瀏覽器 localStorage，不會回傳或上傳至任何伺服器。</li>
+      <li>僅供教學、課程及個人使用，禁止未經授權公開發布、販售或商業化使用。</li>
+    </ul>
+  </div>
+
+  <div class="creator-box">
+    <h3>創作者資訊</h3>
+    <p><strong>Mark Tsai（蔡豐全）</strong></p>
+  </div>
+
   <div class="footer-links">
+    <span class="footer-meta-text">製作：Mark Tsai｜<a href="mailto:tsaimark@gmail.com">tsaimark@gmail.com</a></span>
     <a href="manual.html">📖 操作手冊</a>
     <button type="button" id="installBtn" class="footer-link-btn">📲 加入主畫面</button>
   </div>
@@ -309,11 +336,25 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
       animal: '🐱',
       kicker: '第五關 · 老貓店長的帳本',
       title: 'Amazon 成本分析計算機',
-      story: '最後，大家以為終於可以大賺一筆。結果老貓店長問：商品賣出去了，那……到底賺多少？售價扣掉商品成本、Amazon 平台費用、廣告費、物流費之後，真正的利潤可能完全不同！於是最後的「Amazon 成本分析計算機」正式啟動。',
+      story: '眼看五個環節都摸過一輪，大家以為終於可以大賺一筆。結果老貓店長問：商品賣出去了，那……到底賺多少？售價扣掉商品成本、Amazon 平台費用、廣告費、物流費之後，真正的利潤可能完全不同！於是「Amazon 成本分析計算機」正式啟動。',
       quote: '「商品賣出去了，那……到底賺多少？」——老貓店長',
-      task: '🎯 最終任務：確認這門生意到底賺不賺錢！',
+      task: '🎯 任務：確認這門生意到底賺不賺錢！',
       url: 'https://m255525.github.io/amazon-cost-calculator/',
       serialKey: 'amazonCostCalcSerial'
+    },
+    {
+      id: 'workflow',
+      emoji: '🧩',
+      animal: '🦦',
+      kicker: '第六關 · 跨境電商指揮塔',
+      title: '內容工作流工作室',
+      story: '算完利潤，大家原本以為任務結束了。這時一直沒開口的海獺說話了：「我們學會了市場調查、物流選擇、商品標題、產品說明、成本試算……但真正厲害的商人，不是只會分開用這些工具，而是能把整條流程串成一部自動運轉的機器！」於是探險隊爬上森林最高的「跨境電商指揮塔」，把前面學到的每一項技能，一個個接成一條屬於自己的工作流程。',
+      quote: '「真正厲害的商人，是能把整條流程串成一部自動運轉的機器！」——海獺',
+      task: '🎯 最終任務：把所學技能串成一條屬於自己的跨境電商工作流程！',
+      url: 'https://content-workflow-studio-cf.content-workflow.workers.dev/',
+      serialKey: 'workflowStudioEntrySerial',
+      crossOrigin: true,
+      note: '⚠️ 這個關卡的工具部署在不同網域（content-workflow-studio-cf.content-workflow.workers.dev），探索隊序號不會自動代入，需要另外向主辦單位取得這一關專屬的序號。'
     }
   ];
 
@@ -374,6 +415,7 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
         '<div class="stage-story">' + stage.story + '</div>' +
         '<div class="stage-quote">' + stage.quote + '</div>' +
         '<div class="stage-task">' + stage.task + '</div>' +
+        (stage.note ? '<div class="stage-note">' + stage.note + '</div>' : '') +
         '<div class="stage-actions">' +
           '<a class="stage-cta" href="' + stage.url + '" target="_blank" rel="noopener noreferrer">🚪 前往關卡練習</a>' +
           '<label class="stage-done-toggle"><input type="checkbox" data-stage="' + stage.id + '" ' + (isDone ? 'checked' : '') + '> 我已完成這一關的任務</label>' +
@@ -414,7 +456,7 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
   }
 
   document.getElementById('btnResetProgress').addEventListener('click', function () {
-    if (!window.confirm('確定要清空 5 個關卡的完成紀錄，重新挑戰一次嗎？')) return;
+    if (!window.confirm('確定要清空 6 個關卡的完成紀錄，重新挑戰一次嗎？')) return;
     saveProgress({});
     render();
   });
@@ -595,8 +637,8 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
     ctx.font = '17px "Microsoft JhengHei", sans-serif';
     ctx.fillStyle = '#3b2a1a';
     var lines = [
-      '已完成「動物朋友的跨境電商大冒險」五大關卡：',
-      '流量排行榜森林 → 跨境物流大河 → 商品標題工坊 → 商品魔法屋 → 老貓店長的帳本',
+      '已完成「動物朋友的跨境電商大冒險」六大關卡：',
+      '流量排行榜 → 跨境物流 → 商品標題 → 產品說明 → 成本利潤 → 整合工作流',
       '正式成為跨境電商探險家！'
     ];
     lines.forEach(function (line, i) {
@@ -639,6 +681,10 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
   // 驗證通過後，把同一組序號代入以下 5 個關卡工具各自的 localStorage key。
   // 只有當該序號「同時也存在於該工具自己的授權清單」時，該工具才會真的免輸入自動解鎖；
   // 否則使用者到該工具時欄位會先帶入這組序號，仍需視驗證結果自行修正。
+  // 注意：第六關「內容工作流工作室」(content-workflow-studio-cf) 部署在
+  // content-workflow-studio-cf.content-workflow.workers.dev，跟本頁及其餘 5 個工具
+  // 所在的 m255525.github.io 是不同來源（origin），瀏覽器不允許跨來源共享 localStorage，
+  // 因此該工具的 workflowStudioEntrySerial 刻意不放進這份清單——寫了也不會被那個網域讀到。
   var DOWNSTREAM_KEYS = [
     'trafficRankSerial',
     'logisticsGameSerial',
