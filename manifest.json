@@ -1,0 +1,16 @@
+{
+  "name": "動物朋友的跨境電商大冒險",
+  "short_name": "動物電商大冒險",
+  "description": "動物朋友跨境電商闖關學習冒險：串聯5個跨境電商實作工具的故事化學習地圖",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5ecd7",
+  "theme_color": "#4d8b31",
+  "lang": "zh-TW",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

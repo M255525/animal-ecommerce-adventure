@@ -1,0 +1,5 @@
+*.bak
+*_backup*
+Thumbs.db
+Desktop.ini
+.gas-deploy/
