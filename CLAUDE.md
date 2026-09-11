@@ -34,12 +34,28 @@
 - **⚠️ 尚待使用者完成一次性 OAuth 授權**：部署後 `curl -sL` 測試 `doGet` 回傳 Google 的「需要存取權」頁面（`title:"存取遭拒"`），這是正常現象（自己寫的私人腳本沒有送 Google 審查），需使用者親自打開上面的 Apps Script 編輯器網址，執行一次 `doGet` 或直接部署管理頁面跑過同意畫面，之後前端 `licenseGate` 才能正常驗證序號。此前使用者打開 `index.html` 會看到「無法連線授權伺服器」。
 - 授權完成後，需請使用者（或用 `SN-maker`）在「AnimalAdventure序號」分頁新增至少一筆序號才能真正開放使用——分頁目前只有表頭、無任何序號列，比照 `license-gate-rollout-amazon-tools-traffic-rank` 記載的同類收尾步驟。
 
-## 進度追蹤與證書（純前端、無後端）
+## 身分欄位（姓名／組別／學號／系所，2026-09-11 應使用者要求新增）
 
-- 5 關的「我已完成這一關的任務」勾選狀態存在 `localStorage['animalAdventureProgress']`（`{stageId: boolean}`），純自我紀錄，**不會回傳給任何伺服器**，換裝置或清瀏覽器資料會重置。
+報到閘門的姓名輸入框旁新增 `.gate-id-grid`（3 欄，420px 以下斷點收成 2 欄）：組別／學號／系所，皆選填。四欄合併存成單一 JSON 物件 `localStorage['animalAdventureIdentity']`（`{name, group, studentId, dept}`），**由閘門 IIFE 與主程式 IIFE 共用同一個 key**（兩個 IIFE 各自定義了同名的 `IDENTITY_KEY`／`loadIdentity()`，未共用變數但寫讀同一把 localStorage key，屬於刻意的鬆耦合設計，跟其餘「獨立運作」的 IIFE 慣例一致）。填寫過一次下次開啟會自動帶回四個輸入框（比照 `amazon-logistics-game` 的 `loadIdentityDraft()` 慣例）。四欄只用於畫面顯示（證書／截圖／進度存檔），**完全不會送進任何序號驗證請求**。
+
+## 進度追蹤、證書、截圖分享與存檔（純前端、無後端）
+
+- 5 關的「我已完成這一關的任務」勾選狀態存在 `localStorage['animalAdventureProgress']`（`{stageId: boolean}`），純自我紀錄，**不會回傳給任何伺服器**，換裝置或清瀏覽器資料會重置（可用下方存檔／讀檔功能因應）。
 - 關卡採**軟性循序解鎖**：`render()` 依 `STAGES` 陣列順序判斷前一關是否已勾選完成，未完成則疊加 `.stage-lock-overlay` 視覺鎖定（CSS 遮罩+🔒文字），但**這只是本頁畫面上的提示，不會真的擋住玩家直接開網址使用任一關卡工具**——5 個工具本身是完全獨立、可直接存取的網站。
-- 5 關全部勾選完成後，`treasureSection` 淡入、觸發 `confetti()`（逐字沿用 `amazon-logistics-game` 已驗證過的 CSS 彩帶效果），並可按「🎓 下載我的探險家證書」——`downloadCertificate()` 用 Canvas 2D 手繪一張 1000×700 PNG（含探險家名字、五關摘要、結語金句、日期），`canvas.toBlob()+<a download>` 觸發下載，零外部依賴，手法比照 `amazon-logistics-game` 的 `buildResultCanvas()`。
-- 「🔄 重新挑戰一次」只清空 `animalAdventureProgress`，不影響已驗證的序號（`animalAdventureSerial`）。
+- 5 關全部勾選完成後，`treasureSection` 淡入、顯示 `#treasureIdentity`（`identityLine()` 組合姓名／組別／學號／系所，全空時顯示「（未填寫……）」，比照 `traffic-rank-estimator` 的 `renderResultIdentity()` 慣例）、觸發 `confetti()`（逐字沿用 `amazon-logistics-game` 已驗證過的 CSS 彩帶效果），並提供三種輸出：
+  - **🎓 下載我的探險家證書**：`downloadCertificate(identity)` 用 Canvas 2D 手繪一張 1000×700 PNG（含姓名、組別/學號/系所——用 `ctx.measureText()` 量寬過長才自動換行，手法比照 `amazon-logistics-game` 的 `fitIdentityLines()`、五關摘要、結語金句、日期），`canvas.toBlob()+<a download>` 觸發下載，零外部依賴。
+  - **📷 下載截圖**（2026-09-11 新增）：`html2canvas`（CDN `cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1`）直接對 `#treasureSection` 整個節點截圖成 PNG，內容與畫面所見一致（含識別資訊列），手法比照 `traffic-rank-estimator` 的 `downloadScreenshot()`。
+  - **📤 分享**（2026-09-11 新增）：只有 `navigator.share`＋`navigator.canShare` 都存在時才顯示按鈕（主要是手機瀏覽器）；截圖後包成 `File` 呼叫 `navigator.share({files:[...]})` 跳系統分享選單，`canShare` 檢查未過或分享失敗則退回等同「下載截圖」的行為。
+- 「🔄 重新挑戰一次」只清空 `animalAdventureProgress`，不影響已驗證的序號（`animalAdventureSerial`）與身分欄位。
+
+## 進度存檔／讀檔（`.json` 檔案，2026-09-11 應使用者要求新增：「沒完成也能存檔，下次接著玩」）
+
+進度條下方 `.progress-actions` 提供：
+
+- **💾 下載進度存檔**：把 `{type, version, exportedAt, identity, progress}` 包成 JSON，`Blob`+`<a download>` 存成 `跨境電商冒險進度_<姓名>_<日期>.json`。
+- **📂 匯入進度存檔**：隱藏的 `<input type="file" accept="application/json">` 由按鈕觸發 `.click()`，`FileReader.readAsText()` 讀檔→`JSON.parse`→驗證 `data.progress` 是物件才採用（格式不符會 `alert` 提示、不覆蓋現有進度）→分別寫回 `animalAdventureProgress`／`animalAdventureIdentity`→同步回填報到閘門四個輸入框→呼叫 `render()` 重繪→`alert('進度已匯入！')`。
+- 這組存檔/讀檔**只搬動 `progress` 與 `identity`，刻意不包含序號**（`animalAdventureSerial`）——換裝置/瀏覽器時序號驗證仍須照第一次報到流程重新輸入，存檔只負責接續故事進度與身分資訊，避免序號檔案外流被冒用的疑慮。
+- 已用 Playwright 以 `DataTransfer` 建構真實 `File` 物件指派給 `input.files` 並手動 `dispatchEvent('change')` 完整驗證這條路徑（無法用真實檔案選取對話框自動化測試，這是目前最接近真實使用者操作的驗證方式）。
 
 ## 視覺主題
 
@@ -64,7 +80,9 @@
 
 驗證序號代入邏輯不需要真正的後端：在瀏覽器 console 執行 `localStorage.setItem('animalAdventureSerial','test123')` 後重新整理，確認 `#gateSerial` 欄位帶入該值且觸發一次 silent 重驗；驗證通過（或用 fetch mock 偽造 `{valid:true,expiresAt:...}`）後檢查 `localStorage.getItem('trafficRankSerial')` 等 5 個 key 是否也已寫入相同值。
 
-驗證闖關進度：`localStorage.setItem('animalAdventureProgress', JSON.stringify({traffic:true,logistics:true,title:true,listing:true,cost:true}))` 後呼叫 `window.__animalAdventure.render()`，確認 `#treasureSection` 移除 `hidden`、`confetti()` 觸發、`#btnCertificate` 可正常產出 canvas 並觸發下載。
+驗證闖關進度：`localStorage.setItem('animalAdventureProgress', JSON.stringify({traffic:true,logistics:true,title:true,listing:true,cost:true}))` 後呼叫 `window.__animalAdventure.render()`，確認 `#treasureSection` 移除 `hidden`、`#treasureIdentity` 正確組合身分欄位、`confetti()` 觸發、`#btnCertificate`／`#btnScreenshot` 皆可正常產出並觸發下載。
+
+驗證進度存檔／讀檔：用 `new File([JSON.stringify(payload)], 'x.json')` + `DataTransfer` 建構真實 File 物件指派給 `#loadProgressInput.files`，手動 `dispatchEvent(new Event('change',{bubbles:true}))`（真實檔案選取對話框無法自動化），確認 `alert('進度已匯入！')` 觸發、`animalAdventureProgress`／`animalAdventureIdentity` 與四個報到欄位皆正確還原。
 
 ## 部署
 

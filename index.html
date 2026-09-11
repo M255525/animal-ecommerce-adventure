@@ -59,6 +59,8 @@ body.has-marquee{padding-top:30px}
 .gate-desc{color:var(--text-dim);font-size:13.5px;margin-bottom:18px}
 .gate-field{margin-bottom:12px;text-align:left}
 .gate-field label{display:block;font-size:12.5px;color:var(--text-dim);margin-bottom:4px;font-weight:600}
+.gate-id-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 10px}
+@media(max-width:420px){.gate-id-grid{grid-template-columns:1fr 1fr}}
 .gate-row{display:flex;gap:8px}
 .gate-row input,#gateName{flex:1;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-size:14px;width:100%}
 .gate-row input:focus,#gateName:focus{outline:2px solid var(--accent);outline-offset:1px}
@@ -135,7 +137,10 @@ main{max-width:820px;margin:0 auto;padding:28px 20px 60px}
 .progress-track{max-width:820px;margin:0 auto;padding:0 20px}
 .progress-bar-outer{height:10px;border-radius:99px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden}
 .progress-bar-inner{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%;transition:width .4s ease}
-.progress-label{font-size:12px;color:var(--text-dim);margin:6px 0 18px;text-align:right}
+.progress-label{font-size:12px;color:var(--text-dim);margin:6px 0;text-align:right}
+.progress-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-bottom:6px}
+.progress-hint{font-size:11.5px;color:var(--text-dim);text-align:right;margin-bottom:18px}
+.identity-line{font-size:13px;color:var(--text-dim);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:6px 0 4px;text-align:left}
 
 footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;font-size:12.5px;color:var(--text-dim)}
 .footer-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
@@ -156,8 +161,22 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
     <div class="gate-logo">森林動物探索社 · 跨境電商探索隊</div>
     <div class="gate-desc">輸入你的專屬「探索隊序號」加入冒險！同一組序號驗證通過後，會自動代入後面 5 個關卡的工具——只要各關卡也認得這組序號，就不用再重複輸入。序號自第一次驗證起提供 12 個月使用期限。</div>
     <div class="gate-field">
-      <label for="gateName">你的探險家名字（選填，會印在最後的證書上）</label>
+      <label for="gateName">姓名（選填，會印在證書與截圖上）</label>
       <input type="text" id="gateName" placeholder="例如：小明" autocomplete="off">
+    </div>
+    <div class="gate-id-grid">
+      <div class="gate-field">
+        <label for="gateGroup">組別</label>
+        <input type="text" id="gateGroup" placeholder="選填" autocomplete="off">
+      </div>
+      <div class="gate-field">
+        <label for="gateStudentId">學號</label>
+        <input type="text" id="gateStudentId" placeholder="選填" autocomplete="off">
+      </div>
+      <div class="gate-field">
+        <label for="gateDept">系所</label>
+        <input type="text" id="gateDept" placeholder="選填" autocomplete="off">
+      </div>
     </div>
     <div class="gate-field">
       <label for="gateSerial">探索隊序號</label>
@@ -194,6 +213,12 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
 <div class="progress-track">
   <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBarInner"></div></div>
   <div class="progress-label" id="progressLabel">0／5 關卡完成</div>
+  <div class="progress-actions">
+    <button type="button" class="footer-link-btn" id="btnSaveProgress">💾 下載進度存檔</button>
+    <button type="button" class="footer-link-btn" id="btnLoadProgress">📂 匯入進度存檔</button>
+    <input type="file" id="loadProgressInput" accept="application/json" style="display:none;">
+  </div>
+  <div class="progress-hint">還沒破關也沒關係——按「下載進度存檔」把目前進度存成檔案，下次回來用「匯入進度存檔」繼續玩（不影響序號驗證）。</div>
 </div>
 
 <main>
@@ -204,8 +229,11 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
     <h2>全球電商寶箱打開了！</h2>
     <blockquote>「跨境電商不是把商品賣出去，而是找到『市場、流量、商品、物流與利潤』之間的最佳平衡。」</blockquote>
     <p>🎉 恭喜你，<strong id="graduateName">探險家</strong>！你已經完成「動物朋友跨境電商訓練營」，正式成為 <strong>🌏🐾 跨境電商探險家！</strong></p>
+    <div class="identity-line" id="treasureIdentity"></div>
     <div class="cta-row">
       <button type="button" class="btn-primary" id="btnCertificate">🎓 下載我的探險家證書</button>
+      <button type="button" class="btn-ghost" id="btnScreenshot">📷 下載截圖</button>
+      <button type="button" class="btn-ghost hidden" id="btnShare">📤 分享</button>
       <button type="button" class="btn-ghost" id="btnResetProgress">🔄 重新挑戰一次</button>
     </div>
   </div>
@@ -220,6 +248,7 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
   <img src="https://visitor-badge.laobi.icu/badge?page_id=m255525.animalecommerceadventure" alt="訪客次數" style="vertical-align:middle;height:20px;">
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 /* ================= 故事關卡資料與闖關進度（主程式） ================= */
 (function () {
@@ -289,7 +318,7 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
   ];
 
   var PROGRESS_KEY = 'animalAdventureProgress';
-  var NAME_KEY = 'animalAdventureName';
+  var IDENTITY_KEY = 'animalAdventureIdentity';
 
   function loadProgress() {
     try { return JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}'); } catch (e) { return {}; }
@@ -297,8 +326,16 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
   function saveProgress(p) {
     try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(p)); } catch (e) {}
   }
-  function loadName() {
-    try { return localStorage.getItem(NAME_KEY) || ''; } catch (e) { return ''; }
+  function loadIdentity() {
+    try { return JSON.parse(localStorage.getItem(IDENTITY_KEY) || '{}'); } catch (e) { return {}; }
+  }
+  function identityLine(identity) {
+    var parts = [];
+    if (identity.name) parts.push('姓名：' + identity.name);
+    if (identity.group) parts.push('組別：' + identity.group);
+    if (identity.studentId) parts.push('學號：' + identity.studentId);
+    if (identity.dept) parts.push('系所：' + identity.dept);
+    return parts.length ? parts.join('　｜　') : '（未填寫姓名／組別／學號／系所）';
   }
 
   var trailEl = document.getElementById('trail');
@@ -307,6 +344,7 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
   var progressLabel = document.getElementById('progressLabel');
   var progressPill = document.getElementById('progressPill');
   var graduateNameEl = document.getElementById('graduateName');
+  var treasureIdentityEl = document.getElementById('treasureIdentity');
 
   function render() {
     var progress = loadProgress();
@@ -362,8 +400,9 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
     progressPill.textContent = doneCount + ' / ' + STAGES.length + ' 關卡完成';
 
     if (doneCount === STAGES.length) {
-      var name = loadName();
-      graduateNameEl.textContent = name || '探險家';
+      var identity = loadIdentity();
+      graduateNameEl.textContent = identity.name || '探險家';
+      treasureIdentityEl.textContent = identityLine(identity);
       if (treasureEl.classList.contains('hidden')) {
         treasureEl.classList.remove('hidden');
         treasureEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -381,8 +420,104 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
   });
 
   document.getElementById('btnCertificate').addEventListener('click', function () {
-    downloadCertificate(loadName() || '探險家');
+    downloadCertificate(loadIdentity());
   });
+
+  /* ---- 進度存檔／讀檔（純本機檔案，不經任何伺服器） ---- */
+  document.getElementById('btnSaveProgress').addEventListener('click', function () {
+    var payload = {
+      type: 'animal-ecommerce-adventure-progress',
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      identity: loadIdentity(),
+      progress: loadProgress()
+    };
+    var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    var namePart = (loadIdentity().name || '探險家').replace(/[\\/:*?"<>|]/g, '');
+    a.href = URL.createObjectURL(blob);
+    a.download = '跨境電商冒險進度_' + namePart + '_' + new Date().toISOString().slice(0, 10) + '.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+  });
+
+  var loadProgressInput = document.getElementById('loadProgressInput');
+  document.getElementById('btnLoadProgress').addEventListener('click', function () {
+    loadProgressInput.value = '';
+    loadProgressInput.click();
+  });
+  loadProgressInput.addEventListener('change', function () {
+    var file = loadProgressInput.files && loadProgressInput.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      var data;
+      try { data = JSON.parse(reader.result); } catch (e) {
+        window.alert('這個檔案看起來不是有效的進度存檔（無法解析 JSON）。');
+        return;
+      }
+      if (!data || typeof data.progress !== 'object') {
+        window.alert('這個檔案看起來不是「動物朋友的跨境電商大冒險」的進度存檔。');
+        return;
+      }
+      saveProgress(data.progress || {});
+      if (data.identity && typeof data.identity === 'object') {
+        try { localStorage.setItem(IDENTITY_KEY, JSON.stringify(data.identity)); } catch (e) {}
+        var gName = document.getElementById('gateName'), gGroup = document.getElementById('gateGroup'),
+            gSid = document.getElementById('gateStudentId'), gDept = document.getElementById('gateDept');
+        if (gName) gName.value = data.identity.name || '';
+        if (gGroup) gGroup.value = data.identity.group || '';
+        if (gSid) gSid.value = data.identity.studentId || '';
+        if (gDept) gDept.value = data.identity.dept || '';
+      }
+      render();
+      window.alert('進度已匯入！');
+    };
+    reader.readAsText(file);
+  });
+
+  /* ---- 下載截圖／分享（沿用 traffic-rank-estimator 已驗證過的 html2canvas 模式） ---- */
+  function captureTreasureCanvas() {
+    return html2canvas(treasureEl, { backgroundColor: '#fffaf0', scale: 2 });
+  }
+  function buildScreenshotFilename() {
+    var namePart = (loadIdentity().name || '探險家').replace(/[^a-zA-Z0-9一-鿿]/g, '');
+    return '跨境電商探險家成果_' + namePart + '_' + new Date().toISOString().slice(0, 10) + '.png';
+  }
+  document.getElementById('btnScreenshot').addEventListener('click', function () {
+    captureTreasureCanvas().then(function (canvas) {
+      canvas.toBlob(function (blob) {
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = buildScreenshotFilename();
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+      }, 'image/png');
+    }).catch(function () {
+      window.alert('截圖產生失敗，請稍後再試一次。');
+    });
+  });
+
+  var shareBtn = document.getElementById('btnShare');
+  if (navigator.share && navigator.canShare) {
+    shareBtn.classList.remove('hidden');
+    shareBtn.addEventListener('click', function () {
+      captureTreasureCanvas().then(function (canvas) {
+        canvas.toBlob(function (blob) {
+          var file = new File([blob], buildScreenshotFilename(), { type: 'image/png' });
+          if (navigator.canShare({ files: [file] })) {
+            navigator.share({ files: [file], title: '跨境電商探險家', text: '我完成了「動物朋友的跨境電商大冒險」！' }).catch(function () {});
+          } else {
+            document.getElementById('btnScreenshot').click();
+          }
+        }, 'image/png');
+      });
+    });
+  }
 
   function confetti() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -400,7 +535,9 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
     }
   }
 
-  function downloadCertificate(name) {
+  function downloadCertificate(identity) {
+    identity = identity || {};
+    var name = identity.name || '探險家';
     var W = 1000, H = 700;
     var canvas = document.createElement('canvas');
     canvas.width = W; canvas.height = H;
@@ -418,19 +555,42 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
     ctx.textAlign = 'center';
     ctx.fillStyle = '#d97706';
     ctx.font = '48px sans-serif';
-    ctx.fillText('🌏🐾', W / 2, 130);
+    ctx.fillText('🌏🐾', W / 2, 122);
 
     ctx.fillStyle = '#3b2a1a';
     ctx.font = 'bold 30px "Microsoft JhengHei", sans-serif';
-    ctx.fillText('跨境電商探險家證書', W / 2, 195);
+    ctx.fillText('跨境電商探險家證書', W / 2, 185);
 
     ctx.font = '16px "Microsoft JhengHei", sans-serif';
     ctx.fillStyle = '#7a6852';
-    ctx.fillText('Certificate of Cross-Border E-commerce Explorer', W / 2, 222);
+    ctx.fillText('Certificate of Cross-Border E-commerce Explorer', W / 2, 212);
 
     ctx.font = 'bold 40px "Microsoft JhengHei", sans-serif';
     ctx.fillStyle = '#4d8b31';
-    ctx.fillText(name, W / 2, 320);
+    ctx.fillText(name, W / 2, 285);
+
+    // 組別／學號／系所：量寬後視需要換行，避免文字溢出證書邊界
+    var subParts = [];
+    if (identity.group) subParts.push('組別：' + identity.group);
+    if (identity.studentId) subParts.push('學號：' + identity.studentId);
+    if (identity.dept) subParts.push('系所：' + identity.dept);
+    if (subParts.length) {
+      ctx.font = '15px "Microsoft JhengHei", sans-serif';
+      ctx.fillStyle = '#7a6852';
+      var maxWidth = W - 160;
+      var oneLine = subParts.join('　｜　');
+      var subLines = ctx.measureText(oneLine).width <= maxWidth ? [oneLine] : [];
+      if (!subLines.length) {
+        var cur = '';
+        subParts.forEach(function (part) {
+          var next = cur ? cur + '　｜　' + part : part;
+          if (ctx.measureText(next).width > maxWidth && cur) { subLines.push(cur); cur = part; }
+          else cur = next;
+        });
+        if (cur) subLines.push(cur);
+      }
+      subLines.forEach(function (line, i) { ctx.fillText(line, W / 2, 315 + i * 20); });
+    }
 
     ctx.font = '17px "Microsoft JhengHei", sans-serif';
     ctx.fillStyle = '#3b2a1a';
@@ -440,12 +600,12 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
       '正式成為跨境電商探險家！'
     ];
     lines.forEach(function (line, i) {
-      ctx.fillText(line, W / 2, 380 + i * 30);
+      ctx.fillText(line, W / 2, 390 + i * 30);
     });
 
     ctx.font = 'italic 15px "Microsoft JhengHei", sans-serif';
     ctx.fillStyle = '#7a6852';
-    ctx.fillText('「跨境電商不是把商品賣出去，而是找到市場、流量、商品、物流與利潤之間的最佳平衡。」', W / 2, 500);
+    ctx.fillText('「跨境電商不是把商品賣出去，而是找到市場、流量、商品、物流與利潤之間的最佳平衡。」', W / 2, 505);
 
     var dateStr = new Date().toLocaleDateString('zh-TW');
     ctx.font = '14px sans-serif';
@@ -454,7 +614,7 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
     canvas.toBlob(function (blob) {
       var a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = '跨境電商探險家證書_' + (name || '探險家') + '.png';
+      a.download = '跨境電商探險家證書_' + name + '.png';
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -473,7 +633,7 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
   'use strict';
   var LICENSE_CHECK_URL = "https://script.google.com/macros/s/AKfycbxM07ltAJairQi5oRlbbRC_cn4KNx-FIdXY-OZnE3bRqDRlQtRF3mqjUE1fd0ILbaRs6A/exec";
   var STORAGE_KEY = 'animalAdventureSerial';
-  var NAME_KEY = 'animalAdventureName';
+  var IDENTITY_KEY = 'animalAdventureIdentity';
   var RECHECK_MS = 20 * 60 * 1000;
 
   // 驗證通過後，把同一組序號代入以下 5 個關卡工具各自的 localStorage key。
@@ -490,6 +650,9 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
   var gate = document.getElementById('licenseGate');
   var input = document.getElementById('gateSerial');
   var nameInput = document.getElementById('gateName');
+  var groupInput = document.getElementById('gateGroup');
+  var studentIdInput = document.getElementById('gateStudentId');
+  var deptInput = document.getElementById('gateDept');
   var toggleBtn = document.getElementById('btnGateToggle');
   var confirmBtn = document.getElementById('btnGateConfirm');
   var statusEl = document.getElementById('gateStatus');
@@ -502,7 +665,18 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
       try { localStorage.setItem(key, s); } catch (e) {}
     });
   }
-  function saveName(n) { try { localStorage.setItem(NAME_KEY, n); } catch (e) {} }
+  function loadIdentity() {
+    try { return JSON.parse(localStorage.getItem(IDENTITY_KEY) || '{}'); } catch (e) { return {}; }
+  }
+  function saveIdentity() {
+    var identity = {
+      name: nameInput.value.trim(),
+      group: groupInput.value.trim(),
+      studentId: studentIdInput.value.trim(),
+      dept: deptInput.value.trim()
+    };
+    try { localStorage.setItem(IDENTITY_KEY, JSON.stringify(identity)); } catch (e) {}
+  }
 
   var REASON_LABEL = {
     missing_serial: '請輸入探索隊序號',
@@ -593,15 +767,22 @@ footer{max-width:820px;margin:0 auto;padding:20px 20px 50px;text-align:center;fo
   confirmBtn.addEventListener('click', function () {
     var serial = input.value.trim();
     saveSerial(serial);
-    saveName(nameInput.value.trim());
+    saveIdentity();
     runCheck(serial);
   });
-  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); confirmBtn.click(); } });
-  nameInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); confirmBtn.click(); } });
+  [input, nameInput, groupInput, studentIdInput, deptInput].forEach(function (el) {
+    el.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); confirmBtn.click(); } });
+  });
   toggleBtn.addEventListener('click', function () { input.type = input.type === 'password' ? 'text' : 'password'; });
 
   input.value = loadSerial();
-  nameInput.value = localStorage.getItem(NAME_KEY) || '';
+  (function () {
+    var identity = loadIdentity();
+    nameInput.value = identity.name || '';
+    groupInput.value = identity.group || '';
+    studentIdInput.value = identity.studentId || '';
+    deptInput.value = identity.dept || '';
+  })();
   if (input.value) runCheck(input.value, { silent: true });
 
   setInterval(function () {
