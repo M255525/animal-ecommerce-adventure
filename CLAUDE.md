@@ -42,8 +42,7 @@
 - **綁定的 Google Sheet**：沿用 `product-title-generator`／`amazon-listing-generator`／`traffic-rank-estimator`／`amazon-cost-calculator`／`amazon-logistics-game` 共用的既有表 <https://docs.google.com/spreadsheets/d/1pqGlCvUstowBzZh7J4xEa0jy3KoK4UeHUiyMTzcSGo4/edit>，`Code.gs` 固定操作獨立分頁「AnimalAdventure序號」（`SHEET_NAME` 常數），與其餘 5 個分頁互不干擾。分頁不存在時 `getLicenseSheet_()` 會自動 `insertSheet()` 並寫入表頭（序號／開始日期／結束日期）。
 - **部署方式**：`clasp create --parentId <SheetID>`（不加 `--type`，在本專案 `.gas-deploy/` 內操作，該資料夾已加入 `.gitignore` 不進版控）→ 寫入客製化 `Code.gs`（`SHEET_NAME="AnimalAdventure序號"`，其餘邏輯逐字沿用 `traffic-rank-estimator` 已驗證過的骨架）→ `appsscript.json` 加 `webapp:{executeAs:"USER_DEPLOYING",access:"ANYONE_ANONYMOUS"}` → `clasp push --force` → `clasp deploy`。
 - 已部署：`LICENSE_CHECK_URL = https://script.google.com/macros/s/AKfycbxM07ltAJairQi5oRlbbRC_cn4KNx-FIdXY-OZnE3bRqDRlQtRF3mqjUE1fd0ILbaRs6A/exec`，Apps Script 編輯器：<https://script.google.com/d/1Lut1ZcRXwv7agZMKpzk412OJjptSnoJUGjmQFJpQQ1h_JwEj0dFKsNw5/edit>。
-- **✅ 2026-09-11 已確認 OAuth 授權完成**：曾在瀏覽器 `fetch()` 對 `LICENSE_CHECK_URL` 送出測試序號，回傳正常的 `{"valid":false,"reason":"serial_not_found"}` JSON（而非早期的「需要存取權」錯誤頁），確認一次性 OAuth 同意流程已由使用者完成，`licenseGate` 可以正常運作。
-- 目前「AnimalAdventure序號」分頁應該仍只有表頭、無任何序號列（除非使用者已自行新增）——需請使用者（或用 `SN-maker`）新增至少一筆序號才能真正開放使用，比照 `license-gate-rollout-amazon-tools-traffic-rank` 記載的同類收尾步驟。
+- **✅ 2026-09-11 已確認完整運作**：使用者在「AnimalAdventure序號」分頁新增序號後，用瀏覽器 `fetch()` 對 `LICENSE_CHECK_URL` 送測試序號 `mark0131`（使用者在其他工具也慣用的個人測試帳號），回傳 `{"valid":true,"reason":"ok","activatedAt":"2026-08-15...","expiresAt":"2027-12-30..."}`；並在遊戲頁面實際跑過一次完整報到流程（選角色→輸入序號→送出），閘門正確關閉、`#licenseBadge` 顯示剩餘天數、序號正確代入其餘 6 個同源關卡的 localStorage。OAuth 授權、Sheet 序號列、前端閘門三者皆已確認正常。
 
 ## 身分欄位（姓名／組別／學號／系所，2026-09-11 應使用者要求新增）
 
