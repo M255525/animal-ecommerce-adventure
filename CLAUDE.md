@@ -1,10 +1,12 @@
 # CLAUDE.md — animal-ecommerce-adventure（動物朋友的跨境電商大冒險）
 
-單檔前端「故事化學習地圖」：把工作區內 11 個既有、各自獨立的跨境電商實作工具串成一段動物朋友闖關故事，依序（流量排名 → 跨境物流 →〈中途休息島：關鍵字文字雲，不計分〉→ 商品標題 → 五點式產品說明 → 成本利潤 →〈中途休息島：創意打版台，不計分〉→ 商品組合收支平衡 →〈中途休息島：Amazon客評/客訴回覆信產生器，不計分〉→〈中途休息島：Amazon PPC關鍵字廣告建議工具，不計分〉→ 整合工作流）帶學員走過完整的跨境電商知識脈絡。**本專案本身不含任何跨境電商計算/生成邏輯**，純粹是敘事＋進度追蹤＋導覽入口；每個關卡的「🚪 前往關卡練習」按鈕在新分頁開啟對應工具的真實網址，任務在那邊完成。無建置步驟、無框架、無 package.json，直接開啟 `index.html`（`file://`）或以靜態伺服器託管即可。此資料夾本身是獨立 git 儲存庫，本地身分 `Mark Tsai <tsaimark@gmail.com>`。
+單檔前端「故事化學習地圖」：把工作區內 12 個既有、各自獨立的跨境電商實作工具串成一段動物朋友闖關故事，依序（流量排名 → 跨境物流 →〈中途休息島：關鍵字文字雲，不計分〉→ 商品標題 → 五點式產品說明 → AI 電商競品分析 → 成本利潤 →〈中途休息島：創意打版台，不計分〉→ 商品組合收支平衡 →〈中途休息島：Amazon客評/客訴回覆信產生器，不計分〉→〈中途休息島：Amazon PPC關鍵字廣告建議工具，不計分〉→ 整合工作流）帶學員走過完整的跨境電商知識脈絡。**本專案本身不含任何跨境電商計算/生成邏輯**，純粹是敘事＋進度追蹤＋導覽入口；每個關卡的「🚪 前往關卡練習」按鈕在新分頁開啟對應工具的真實網址，任務在那邊完成。無建置步驟、無框架、無 package.json，直接開啟 `index.html`（`file://`）或以靜態伺服器託管即可。此資料夾本身是獨立 git 儲存庫，本地身分 `Mark Tsai <tsaimark@gmail.com>`。
 
 2026-09-11 依使用者提供的故事腳本建置，關卡順序為使用者指定的「1→5」固定順序（流量排名比較工具 → 跨境物流大挑戰 → 商品標題產生器 → 5點式產品說明產生器 → Amazon成本分析計算機），非本專案自行決定；同日稍後使用者再要求加入第 6 關「內容工作流工作室」（`content-workflow-studio-cf`，放在最後一關）並調整故事，同時補上使用警語與創作者資訊；再稍後又要求把「跨境電商關鍵字文字雲產生器」（`product-keyword-cloud`）插進第 2、3 關中間，定位為「休息島嶼，只有練習不計分」。2026-09-13 使用者再要求在第 5 關（成本利潤）之後、第 6 關（整合工作流）之前，加入第二座不計分休息島「創意打版台」（`innovation-matrix-studio`，把商品與附加價值攤在打版桌上交叉配對激盪創意），並依此微調第 6 關開場故事的銜接句（「算完利潤」改為「離開創意打版台」），沿用既有的 `optional:true`／`requiredStages` 抽象機制，無需改動任何解鎖判斷邏輯。2026-09-14 使用者要求在（當時的）第六關「內容工作流工作室」前面再插入一個必要關卡「亞馬遜商品組合收支平衡計算機」（`amazon-listing-mix-calculator`）：新增第六關「松鼠的百寶倉」（主角為新登場的松鼠角色，故事銜接「老貓店長算完單一商品利潤後，松鼠追問整倉貨物的整體收支」），原第六關「內容工作流工作室」順延為第七關，`kicker` 與開場故事的「離開創意打版台」銜接句同步改為「離開松鼠的百寶倉」；全站計數文案（hero、警語、確認彈窗、證書、`manual.html`）從「六」/「6」/「8」（工具總數）全面改為「七」/「7」/「9」。2026-09-21 使用者再要求在第 6 關「松鼠的百寶倉」之後、第 7 關「內容工作流工作室」之前，插入第三、四座不計分休息島——「Amazon 客評/客訴回覆信產生器」（`amazon-review-reply-generator`，`id:'review'`）與「Amazon PPC 關鍵字廣告建議工具」（`amazon-ppc-advisor`，`id:'ppc'`），皆延續「兔子」帶隊、`optional:true` 的休息島慣例；`workflow` 開場故事的銜接句同步改為「離開廣告出價瞭望台」；`requiredStages` 抽象機制再度證明可直接吃下任意數量與位置的休息島，未改動任何解鎖判斷邏輯；全站工具總數文案（footer 警語、`manual.html`）從「9」改為「11」，休息島數量文案從「兩座」改為「四座」，第一～六關自動代入序號的下游關卡數（`DOWNSTREAM_KEYS`）從 8 個增為 10 個（新增 `arrgLicenseSerial`／`ppcAdvisorLicenseSerial`，皆已確認部署在同源的 `m255525.github.io`）。
 
-## 七個必要關卡＋四座不計分休息島對應表
+**2026-11-23 使用者要求把「AI 電商競品分析系統」（`ecommerce-competitor-analyzer`，`id:'competitor'`，狐狸帶隊「第五關 · 狐狸的偵察望遠鏡」）插進第五關，原第五～七關順延為第六～八關**：`cost` 開場句改為「摸清楚競爭對手之後」、`workflow` 故事技能清單加「競品分析」、證書摘要改八段式、全站「七／7」改「八／8」、工具總數 11→12；`DOWNSTREAM_KEYS` 加 `ecaEntrySerial`（同源，11 個 key）。該工具序號表是「跨境電商工具」試算表的「AI 電商競品分析系統」分頁（見其 CLAUDE.md），有同時登入人數限制。下文「第 N 關」敘述多寫於插入前，現行編號以下表為準。
+
+## 八個必要關卡＋四座不計分休息島對應表
 
 | # | 主題 | 對應工具 | 網址 | 該工具 localStorage 序號 key | 與本頁同源？ | 計入進度？ |
 |---|------|---------|------|------------------------------|--------------|-----------|
@@ -13,12 +15,13 @@
 | 🏝️ | 中途休息島 | `行銷內容工具/product-keyword-cloud` | <https://m255525.github.io/product-keyword-cloud/> | `pkcLicenseSerial` | 是 | **否（`optional:true`）** |
 | 3 | 商品標題工坊 | `行銷內容工具/product-title-generator` | <https://m255525.github.io/product-title-generator/> | `ptgSerial` | 是 | 是 |
 | 4 | 商品魔法屋 | `行銷內容工具/amazon-listing-generator` | <https://m255525.github.io/amazon-listing-generator/> | `alGenSerial` | 是 | 是 |
-| 5 | 老貓店長的帳本 | `資料儀表板/amazon-cost-calculator` | <https://m255525.github.io/amazon-cost-calculator/> | `amazonCostCalcSerial` | 是 | 是 |
+| 5 | 狐狸的偵察望遠鏡 | `行銷內容工具/ecommerce-competitor-analyzer` | <https://m255525.github.io/ecommerce-competitor-analyzer/> | `ecaEntrySerial` | 是 | 是 |
+| 6 | 老貓店長的帳本 | `資料儀表板/amazon-cost-calculator` | <https://m255525.github.io/amazon-cost-calculator/> | `amazonCostCalcSerial` | 是 | 是 |
 | 🏝️ | 中途休息島 | `行銷內容工具/innovation-matrix-studio` | <https://m255525.github.io/innovation-matrix-studio/> | `innovationMatrixSerial` | 是 | **否（`optional:true`）** |
-| 6 | 松鼠的百寶倉 | `資料儀表板/amazon-listing-mix-calculator` | <https://m255525.github.io/amazon-listing-mix-calculator/> | `amazonListingMixSerial` | 是 | 是 |
+| 7 | 松鼠的百寶倉 | `資料儀表板/amazon-listing-mix-calculator` | <https://m255525.github.io/amazon-listing-mix-calculator/> | `amazonListingMixSerial` | 是 | 是 |
 | 🏝️ | 中途休息島 | `行銷內容工具/amazon-review-reply-generator` | <https://m255525.github.io/amazon-review-reply-generator/> | `arrgLicenseSerial` | 是 | **否（`optional:true`）** |
 | 🏝️ | 中途休息島 | `行銷內容工具/amazon-ppc-advisor` | <https://m255525.github.io/amazon-ppc-advisor/> | `ppcAdvisorLicenseSerial` | 是 | **否（`optional:true`）** |
-| 7 | 跨境電商指揮塔 | `行銷內容工具/content-workflow-studio-cf` | <https://content-workflow-studio-cf.content-workflow.workers.dev/> | `workflowStudioEntrySerial` | **否**（部署在 Cloudflare Workers 網域，非 `m255525.github.io`） | 是 |
+| 8 | 跨境電商指揮塔 | `行銷內容工具/content-workflow-studio-cf` | <https://content-workflow-studio-cf.content-workflow.workers.dev/> | `workflowStudioEntrySerial` | **否**（部署在 Cloudflare Workers 網域，非 `m255525.github.io`） | 是 |
 
 這些網址與 localStorage key 名稱是**寫死在 `index.html` 的 `STAGES`／`DOWNSTREAM_KEYS` 常數裡**，若任一來源工具改名、換網址、或改了自己的 `STORAGE_KEY` 變數名稱，本頁對應項目要跟著手動更新（沒有共用設定檔或自動同步機制）。**只有第 7 關跟本頁不同源**——`content-workflow-studio-cf` 部署在 Cloudflare Workers（`*.content-workflow.workers.dev`），因此第 7 關的 `workflowStudioEntrySerial` 刻意**不放進** `DOWNSTREAM_KEYS`（寫了也不會被那個網域讀到），`STAGES` 陣列裡該筆多了 `crossOrigin:true` 與 `note` 欄位；四座休息島（`product-keyword-cloud`、`innovation-matrix-studio`、`amazon-review-reply-generator`、`amazon-ppc-advisor`）與新增的第 6 關（`amazon-listing-mix-calculator`）都部署在 `m255525.github.io`（同源），皆已列進 `DOWNSTREAM_KEYS`。
 
